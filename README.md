@@ -7,8 +7,8 @@ The Doomsday clock is a physical representation of the "Doomsday Clock" from the
 • 3D Printer (The case itself or a creation kit can be found on my website!)
 
 -------------------------------------------------------------------------------------------------------------------------------
-                                                   - Function -
+Function
 The clock has 2 modes: 1. Doomsday Clock. In this mode the mini LCD will display how long it is to midnight acording to the Bulletin of Atomic Scientists. 2. Midnight Countdown, In this mode the mini LCD will display how long until midnight in your area in minutes and seconds. 
 -------------------------------------------------------------------------------------------------------------------------------
-                                                 - Instructions -
+Instructions
 1. Download and extract the code for the ESP32-S3-Zero and add them to the Arduino IDE. 
