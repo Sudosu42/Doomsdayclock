@@ -27,3 +27,9 @@ LCD
 | SDA      | GPIO 8        |
 | SCL      | GPIO 9        |
  
+Button
+
+| Button Pin | ESP32-S3-Zero |
+| ---------- | ------------- |
+| One side   | GPIO 10       |
+| Other side | GND           |
