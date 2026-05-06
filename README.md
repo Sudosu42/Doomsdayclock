@@ -33,3 +33,9 @@ Button
 | ---------- | ------------- |
 | One side   | GPIO 10       |
 | Other side | GND           |
+
+5. Glue the ESP32 and button onto the main case, make sure the USC connector is as centered as possible.
+6. GLue the LCD into the main case, do your best to make sure the LCD is centered and the PCD should be as flush as possible inside the lip of the main case.
+7. Test the system to make sure it's still working and then glue the LCD bezzle in place.
+8. Add the base to the main section of the case.
+9. You're done! When you plug the device in for the first time the LCD will display noise for a few seconds while the wifi and clock data load, sit tight for a second and the device will boot into the doomsday clock mode. Press the button on the back of the device to switch between modes. 
