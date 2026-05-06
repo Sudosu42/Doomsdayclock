@@ -1,10 +1,10 @@
 # Doomsdayclock
 The Doomsday clock is a physical representation of the "Doomsday Clock" from the Bulliten of Atomic Scientists. It also serves as a handy clock that ticks down each minute to midnight in your local area! 
                                                - Required Hardware -
-• 1x ESP32-S3-Zero
-• 1x 0.96" 128x64 IIC OLED Display (4-Pin)
-• 1x Momentary Micro Button, dealers choice
-• 3D Printer (The case itself or a creation kit can be found on my website!)
+1. 1x ESP32-S3-Zero
+2. 1x 0.96" 128x64 IIC OLED Display (4-Pin)
+3. 1x Momentary Micro Button, dealers choice
+4. 3D Printer (The case itself or a creation kit can be found on my website!)
 
 -------------------------------------------------------------------------------------------------------------------------------
 Function
