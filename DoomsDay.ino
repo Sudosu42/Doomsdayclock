@@ -1,0 +1,150 @@
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <WiFi.h>
+#include <time.h>
+#include <math.h>
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+
+#define OLED_SDA 8
+#define OLED_SCL 9
+#define BUTTON_PIN 10
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+// ---------------- WIFI / TIME ----------------
+const char* ssid = "YOUR_BSSID_HERE";
+const char* password = "PASSWORD";
+
+const char* ntpServer = "pool.ntp.org";
+const long gmtOffset_sec = -6 * 3600;
+const int daylightOffset_sec = 3600;
+
+// ---------------- MODE ----------------
+int mode = 0;
+
+// button debounce
+bool lastButtonState = HIGH;
+unsigned long lastDebounceTime = 0;
+const unsigned long debounceDelay = 200;
+
+// ---------------- ANALOG (SIMULATED DOOMSDAY CLOCK) ----------------
+int simHour = 11;
+int simMinute = 58;
+int simSecond = 35;
+
+// ---------------- LAYOUT ----------------
+int cx = 64;
+int cy = 42;
+int radius = 20;
+
+// ---------------- HEADER (FIXED) ----------------
+void drawHeader() {
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(10, 0);
+  display.print("Doomsday Clock");
+}
+
+// ---------------- ANALOG CLOCK ----------------
+void drawHand(float angle, int length) {
+  int x = cx + length * cos(angle);
+  int y = cy + length * sin(angle);
+  display.drawLine(cx, cy, x, y, SSD1306_WHITE);
+}
+
+void drawAnalog() {
+  display.clearDisplay();
+  drawHeader();
+
+  display.drawCircle(cx, cy, radius, SSD1306_WHITE);
+
+  for (int i = 0; i < 12; i++) {
+    float a = i * 30 * PI / 180;
+    int x1 = cx + (radius - 2) * cos(a);
+    int y1 = cy + (radius - 2) * sin(a);
+    int x2 = cx + radius * cos(a);
+    int y2 = cy + radius * sin(a);
+    display.drawLine(x1, y1, x2, y2, SSD1306_WHITE);
+  }
+
+  float secA = (simSecond * 6 - 90) * PI / 180;
+  float minA = ((simMinute + simSecond / 60.0) * 6 - 90) * PI / 180;
+  float hourA = ((simHour % 12 + simMinute / 60.0) * 30 - 90) * PI / 180;
+
+  drawHand(hourA, radius * 0.5);
+  drawHand(minA, radius * 0.75);
+  drawHand(secA, radius * 0.9);
+
+  display.display();
+}
+
+// ---------------- REAL LOCAL TIME ----------------
+void getTime(int &h, int &m, int &s) {
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) return;
+
+  h = timeinfo.tm_hour;
+  m = timeinfo.tm_min;
+  s = timeinfo.tm_sec;
+}
+
+// ---------------- DIGITAL COUNTDOWN ----------------
+void drawDigital() {
+  display.clearDisplay();
+  drawHeader();
+
+  int h, m, s;
+  getTime(h, m, s);
+
+  int currentSeconds = h * 3600 + m * 60 + s;
+  int remaining = 24 * 3600 - currentSeconds;
+
+  int remMin = remaining / 60;
+  int remSec = remaining % 60;
+
+  display.setTextSize(2);
+  display.setCursor(20, 25);
+
+  if (remMin < 10) display.print("0");
+  display.print(remMin);
+  display.print(":");
+  if (remSec < 10) display.print("0");
+  display.print(remSec);
+
+  display.display();
+}
+
+// ---------------- SETUP ----------------
+void setup() {
+  Wire.begin(OLED_SDA, OLED_SCL);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(300);
+  }
+
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+}
+
+// ---------------- LOOP ----------------
+void loop() {
+  bool reading = digitalRead(BUTTON_PIN);
+
+  if (reading == LOW && lastButtonState == HIGH &&
+      (millis() - lastDebounceTime) > debounceDelay) {
+
+    mode = !mode;
+    lastDebounceTime = millis();
+  }
+
+  lastButtonState = reading;
+
+  if (mode == 0) drawAnalog();
+  else drawDigital();
+}
