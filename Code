@@ -15,7 +15,7 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 // ---------------- WIFI / TIME ----------------
-const char* ssid = "YOUR_BSSID_HERE";
+const char* ssid = "YOUR_WIFI_NAME";
 const char* password = "PASSWORD";
 
 const char* ntpServer = "pool.ntp.org";
@@ -30,7 +30,7 @@ bool lastButtonState = HIGH;
 unsigned long lastDebounceTime = 0;
 const unsigned long debounceDelay = 200;
 
-// ---------------- ANALOG (SIMULATED DOOMSDAY CLOCK) ----------------
+// ---------------- ANALOG ----------------
 int simHour = 11;
 int simMinute = 58;
 int simSecond = 35;
@@ -40,7 +40,7 @@ int cx = 64;
 int cy = 42;
 int radius = 20;
 
-// ---------------- HEADER (FIXED) ----------------
+// ---------------- HEADER ----------------
 void drawHeader() {
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
@@ -81,7 +81,7 @@ void drawAnalog() {
   display.display();
 }
 
-// ---------------- REAL LOCAL TIME ----------------
+// ---------------- LOCAL TIME - You may need to change this for your area if you have issues ----------------
 void getTime(int &h, int &m, int &s) {
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo)) return;
