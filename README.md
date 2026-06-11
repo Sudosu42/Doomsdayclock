@@ -14,7 +14,7 @@ The clock has 2 modes: 1. Doomsday Clock. In this mode the mini LCD will display
 Instructions
 
 1. Download and extract the code for the ESP32-S3-Zero and add them to the Arduino IDE. The code requires some libraries, theyr're listed at the top of the script.
-2. Where you see "YOUR_BSSID_HERE" and "PASSWORD" in the script, replace with your wifi information. (Keep the qoutation marks).
+2. Where you see "YOUR_WIFI_NAME" and "PASSWORD" in the script, replace with your wifi information. (Keep the qoutation marks).
 3. Verify the script and then upload it to the ESP32-S3-Zero. If you run into busy errors or any errors connection to the ESP32, hold down the boot button for the duration of the flash.
 4. Print the 3 case parts and wire the electronics following the wiring diagrams below.
 
